@@ -23,21 +23,23 @@
                     @csrf
                     <div class="form-outline mb-4">
                       <input type="email" id="email" name="email" class="form-control form-control-lg"
-                        placeholder="Enter a valid email address" required />
+                        placeholder="Enter a valid email address" value="{{old('email')}}"/>
                       <label class="form-label" for="email">Email address</label>
+                      @error('email')
+                      <div class="text-danger">{{ $message }}</div>
+                      @enderror
                     </div>
 
                     <div class="form-outline mb-3">
                       <input type="password" id="password" name="password" class="form-control form-control-lg"
-                        placeholder="Enter password" required/>
+                        placeholder="Enter password"/>
                       <label class="form-label" for="password">Password</label>
+                      @error('password')
+                      <div class="text-danger">{{$message}}</div>
+                      @enderror
                     </div>
 
                     <div class="d-flex justify-content-between align-items-center">
-                      <div class="form-check mb-0">
-                        <input class="form-check-input me-2" type="checkbox" value="" id="rememberMe" />
-                        <label class="form-check-label" for="rememberMe">Remember me</label>
-                      </div>
                       <a href="{{route('password.update.form')}}" class="text-body">Forgot password?</a>
                     </div>
 

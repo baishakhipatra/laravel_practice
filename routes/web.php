@@ -106,7 +106,6 @@ Route::prefix('user')->middleware(['auth_user'])->group(function(){
       Route::get('/login-page',[HomeController::class, 'login_page'])->name('login_page');
       Route::get('/pricing-tables',[HomeController::class, 'pricing_tables'])->name('pricing_tables');
    });
-
    
    Route::prefix('layout')->group(function(){
       Route::get('/fixed-sidebar',[HomeController::class, 'fixed_sidebar'])->name('fixed_sidebar');
@@ -116,5 +115,5 @@ Route::prefix('user')->middleware(['auth_user'])->group(function(){
    Route::get('/chat/{id}',[HomeController::class, 'user_chat'])->name('user_chat');
    Route::post('chat/send',[HomeController::class, 'user_send_message'])->name('user_send_message');
   
- });
+});
 

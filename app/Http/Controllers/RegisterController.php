@@ -22,7 +22,7 @@ class RegisterController extends Controller
             'email' => 'required|email|max:255|unique:users,email',
             'password' => 'required|string|min:6|confirmed',
             'role' => 'required|in:admin,user',
-            'profile_photo_url' => 'nullable|mimes:jpg,jpeg,png,svg,gif,webp|max:1000',
+            'profile_photo' => 'required|mimes:jpg,jpeg,png,svg,gif,webp|max:1000',
         ]);
 
         try {

@@ -24,16 +24,13 @@ class LoginController extends Controller
         $request->validate([
             'email' =>'required|email',
             'password' => 'required|string|min:6',
-            // 'role' => 'required|in:admin,user',
         ]);
 
-        // if(Auth::attempt($request->only('email','password'))){
-        //     // dd(Auth::check());
-        //     return redirect()->route('index')->with('success','profile login successfull');
-        // }
+
+
         $user = User::where('email', $request->email)->first();
         if (!$user) {
-            return redirect()->back()->withErrors(['login_error' => 'Invalid credentials!']);
+            return redirect()->back()->withErrors(['email' => 'No Account Found This Email!'])->withInput();
         }
         
         $guard = $user->role === 'admin' ? 'web' : 'user';
@@ -46,7 +43,7 @@ class LoginController extends Controller
             return redirect()->route('profiles')->with('success','user login successfull');
            }
         }
-        return redirect()->back()->withErrors(['login_error' => 'Invalid credentials!']);
+        return redirect()->back()->withErrors(['password' => 'Incorrect Password']);
     }
 
 
