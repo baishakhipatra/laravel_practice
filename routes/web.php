@@ -82,6 +82,7 @@ Route::get('/', function () {
    Route::get('/show-query',[HomeController::class, 'showQuery'])->name('show_query');
    Route::get('/chat/{id}', [HomeController::class, 'admin_chat'])->name('admin_chat');
    Route::post('/chat/send', [HomeController::class, 'send_message'])->name('send_message');
+   Route::get('/messages', [HomeController::class, 'getUserMessages'])->name('admin.messages');
  });
 
 Route::prefix('user')->middleware(['auth_user'])->group(function(){

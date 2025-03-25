@@ -324,4 +324,27 @@ class HomeController extends Controller
         ]);
         return redirect()->route('query_list')->with('success', 'message sent successfully');
     }
+
+    public function getUserMessages()
+    {
+        if(Auth::guard('web')->check()){
+            $adminId = 9;
+            
+            $userMessageCount = Chat::where('receiver_id', $adminId)
+                                    ->where('sender','user')
+                                    ->distinct('user_id')
+                                    ->count('user_id');
+
+            $messages = Chat::where('receiver_id', $adminId)
+                                    ->where('sender','user')
+                                    ->with('user')
+                                    ->latest()
+                                    ->limit(4)
+                                    ->get();
+                //dd($messages->toArray());
+            //    dd($userMessageCount, $messages);
+
+         return view('index',compact('userMessageCount','messages'));
+        }
+    }
 }

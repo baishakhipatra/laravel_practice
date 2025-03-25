@@ -242,7 +242,7 @@
                   </div>
                 </li>
 
-                <li role="presentation" class="nav-item dropdown open">
+                {{-- <li role="presentation" class="nav-item dropdown open">
                   <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false">
                     <i class="fa fa-envelope-o"></i>
                     <span class="badge bg-green">6</span>
@@ -305,7 +305,44 @@
                       </div>
                     </li>
                   </ul>
-                </li>
+                </li> --}}
+                @if(Auth::guard('web')->check())
+                  <li role="presentation" class="nav-item dropdown open">
+                    <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false">
+                      <i class="fa fa-envelope-o"></i>
+                      <span class="badge bg-green">{{ $userMessageCount }}</span> 
+                    </a>
+                  
+                    <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1">
+                      @foreach ($messages as $message)
+                        <li class="nav-item">
+                          <a class="dropdown-item">
+                            <span class="image">
+                              <img src="{{ asset($message->user['profile_photo_url']) }}" alt="Profile Image" />
+                            </span>
+                            <span>
+                              <span>{{ $message->user->name }}</span>
+                              <span class="time">{{ $message->created_at->diffForHumans() }}</span>
+                            </span>
+                            <span class="message">
+                              {{ Str::limit($message->message, 50) }} 
+                            </span>
+                          </a>
+                        </li>
+                      @endforeach
+                  
+                      <li class="nav-item">
+                        <div class="text-center">
+                          <a href="{{ route('show_query') }}" class="dropdown-item">
+                            <strong>See All Messages</strong>
+                            <i class="fa fa-angle-right"></i>
+                          </a>
+                        </div>
+                      </li>
+                    </ul>
+                  </li>
+                @endif
+                
               </ul>
             </nav>
           </div>
