@@ -30,14 +30,17 @@ Route::get('/', function () {
  Route::post('/register',[RegisterController::class, 'register']);
 
 
+ Route::get('/forget-password',[LoginController::class, 'forgetPasswordForm'])->name('forget.password.form');
+ Route::post('/forget-password',[LoginController::class, 'forgetPassword'])->name('forget.password');
+
  Route::prefix('admin')->middleware(['auth:web'])->group(function(){
       Route::get('/index',[HomeController::class, 'index'])->name('index');
       Route::post('/logout',[LoginController::class, 'logout'])->name('logout');
 
-      Route::get('/profile',[LoginController::class, 'profile'])->name('profile');
-      Route::post('/profile/update',[LoginController::class, 'profileUpdate'])->name('profile.update');
-      Route::get('/password',[LoginController::class, 'password'])->name('password.update.form');
-      Route::post('/password/update',[LoginController::class, 'update_password'])->name('password.update');
+      Route::get('/profile',[LoginController::class, 'profile'])->name('admin.profile');
+      Route::post('/profile/update',[LoginController::class, 'profileUpdate'])->name('admin.profile.update');
+      Route::get('/password',[LoginController::class, 'password'])->name('admin.password.update.form');
+      Route::post('/password/update',[LoginController::class, 'update_password'])->name('admin.password.update');
   
    Route::prefix('dashboard')->group(function(){
       Route::get('/dashboard1',[HomeController::class, 'index'])->name('index');
@@ -114,6 +117,11 @@ Route::prefix('user')->middleware(['auth_user'])->group(function(){
 
    Route::get('/chat/{id}',[HomeController::class, 'user_chat'])->name('user_chat');
    Route::post('chat/send',[HomeController::class, 'user_send_message'])->name('user_send_message');
+
+   Route::get('/user/profile',[LoginController::class, 'profile'])->name('user.profile');
+   Route::post('/user/profile/update',[LoginController::class, 'profileUpdate'])->name('user.profile.update');
+   Route::get('/user/password',[LoginController::class, 'password'])->name('user.password.update.form');
+   Route::post('/user/password/update',[LoginController::class, 'update_password'])->name('user.password.update');
   
 });
 

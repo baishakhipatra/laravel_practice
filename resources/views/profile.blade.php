@@ -27,14 +27,14 @@
                                 </div>
                             @endif
                             <div class="card-body">
-                                <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data" class="form-horizontal">
+                                <form action="{{ request()->is('admin/*') ? route('admin.profile.update') : route('user.profile.update') }}" method="POST" enctype="multipart/form-data" class="form-horizontal">
                                     @csrf
                                     <div>
                                         <div class="form-group mb-4">
                                             <label for="name" class="control-label col-md-3 col-sm-3 col-xs-12">Name:</label>
                                             <div class="col-md-9 col-sm-9 col-xs-12">
                                                 <input type="text" id="name" name="name" class="form-control"
-                                                    value="{{ Auth::user()->name }}" required>
+                                                    value="{{ old('name', $user->name) }}" required>
                                                 @error('name')
                                                 <span class="text-danger">{{$message}}</span>
                                                 @enderror
@@ -45,7 +45,7 @@
                                             <label for="email" class="control-label col-md-3 col-sm-3 col-xs-12">Email:</label>
                                             <div class="col-md-9 col-sm-9 col-xs-12">
                                                 <input type="email" id="email" name="email" class="form-control"
-                                                    value="{{ Auth::user()->email }}" required>
+                                                    value="{{ old('email', $user->email) }}" required>
                                                     @error('email')
                                                     <span class="text-danger">{{$message}}</span>
                                                     @enderror
@@ -58,9 +58,9 @@
                                             <div class="col-md-9 col-sm-9 col-xs-12">
                                                 <input type="file" id="profile_photo_url" name="profile_photo_url"
                                                     class="form-control">
-                                                @if (Auth::user()->profile_photo_url)
+                                                @if ($user->profile_photo_url)
                                                 <div class="mt-2">
-                                                    <img src="{{ asset(Auth::user()->profile_photo_url) }}" alt="Profile Photo"
+                                                    <img src="{{ asset($user->profile_photo_url) }}" alt="Profile Photo"
                                                         class="img-thumbnail" width="100">
                                                 </div>
                                                 @endif
@@ -71,9 +71,46 @@
                                         <button type="submit" class="btn btn-success mb-2">Update Profile</button>
                                     </div>
                                     <div class="row justify-content-end">
-                                        <a href="{{ route('password.update.form') }}" class="btn btn-success">Update Password</a>
+                                        <a href="{{ Auth::guard('web')->check() ? route('admin.password.update.form') : route('user.password.update.form') }}" class="btn btn-success">Update Password</a>
                                     </div>
                                 </form>
+
+                                {{-- <form action="{{ request()->is('admin/*') ? route('admin.profile.update') : route('user.profile.update') }}" 
+                                    method="POST" 
+                                    enctype="multipart/form-data"  
+                                    class="form-horizontal">
+                                  @csrf
+                                  <div>
+                                      <div class="form-group mb-4">
+                                          <label for="name">Name:</label>
+                                          <input type="text" id="name" name="name" class="form-control"
+                                              value="{{ old('name', $user->name) }}" required>
+                                          @error('name')
+                                              <span class="text-danger">{{ $message }}</span>
+                                          @enderror
+                                      </div>
+                              
+                                      <div class="form-group mb-4">
+                                          <label for="email">Email:</label>
+                                          <input type="email" id="email" name="email" class="form-control"
+                                              value="{{ old('email', $user->email) }}" required>
+                                          @error('email')
+                                              <span class="text-danger">{{ $message }}</span>
+                                          @enderror
+                                      </div>
+                              
+                                      <div class="form-group mb-4">
+                                          <label for="profile_photo_url">Profile Photo:</label>
+                                          <input type="file" id="profile_photo_url" name="profile_photo_url" class="form-control">
+                                          @if ($user->profile_photo_url)
+                                              <div class="mt-2">
+                                                  <img src="{{ asset($user->profile_photo_url) }}" alt="Profile Photo" class="img-thumbnail" width="100">
+                                              </div>
+                                          @endif
+                                      </div>
+                                  </div>
+                                  <button type="submit" class="btn btn-success">Update Profile</button>
+                              </form>                               --}}
                             </div>
                         </div>
                     </div>

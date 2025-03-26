@@ -227,11 +227,11 @@
                   </a>
                 
                   <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item"  href="{{route('profile')}}"> Profile</a>
-                      {{-- <a class="dropdown-item"  href="javascript:;">
-                        <span class="badge bg-red pull-right">50%</span>
-                        <span>Settings</span>
-                      </a> --}}
+                    {{-- <a class="dropdown-item"  href="{{route('profile')}}"> Profile</a> --}}
+                    <a class="dropdown-item"  
+                    href="{{ Auth::guard('web')->check() ? route('admin.profile') : route('user.profile') }}">
+                    Profile
+                    </a>
                     <a class="dropdown-item"  href="javascript:;">Help</a>
                     {{-- <a class="dropdown-item"  href="{{route('logout')}}"><i class="fa fa-sign-out pull-right"></i> Log Out</a> --}}
                     <form class="dropdown-item" action="{{ route('logout') }}" method="POST" style="display: inline;">
@@ -306,6 +306,7 @@
                     </li>
                   </ul>
                 </li> --}}
+                
                 @if(Auth::guard('web')->check())
                   <li role="presentation" class="nav-item dropdown open">
                     <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false">

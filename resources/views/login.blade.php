@@ -40,7 +40,7 @@
                     </div>
 
                     <div class="d-flex justify-content-between align-items-center">
-                      <a href="{{route('password.update.form')}}" class="text-body">Forgot password?</a>
+                      <a href="{{route('forget.password.form')}}" class="text-body">Forgot password?</a>
                     </div>
 
                     <div class="text-center text-lg-start mt-4 pt-2">
