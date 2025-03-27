@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ProjectController;
 
 /*
 |--------------------------------------------------------------------------
@@ -86,15 +87,24 @@ Route::get('/', function () {
    Route::get('/chat/{id}', [HomeController::class, 'admin_chat'])->name('admin_chat');
    Route::post('/chat/send', [HomeController::class, 'send_message'])->name('send_message');
    Route::get('/messages', [HomeController::class, 'getUserMessages'])->name('admin.messages');
+
+   Route::get('/contacts',[HomeController::class, 'contacts'])->name('contacts');
+   Route::get('/view_profile/{id}',[HomeController::class, 'view_profile'])->name('view_profile');
  });
 
 Route::prefix('user')->middleware(['auth_user'])->group(function(){
    Route::post('/chat/user_send', [HomeController::class, 'user_send_message'])->name('user_send_message');
    Route::prefix('additional-pages')->group(function(){
       Route::get('/e-commerce',[HomeController::class, 'e_commerce'])->name('e_commerce'); 
-      Route::get('/projects',[HomeController::class, 'projects'])->name('projects');
+
+
+      Route::get('/projects',[ProjectController::class, 'projects'])->name('projects');
+      Route::get('projects/add',[ProjectController::class, 'projectsAdd'])->name('project.add');
+      Route::post('/projects/store',[ProjectController::class, 'projectsStore'])->name('project.store');
+
+
+
       Route::get('/project-detail',[HomeController::class, 'project_detail'])->name('project_detail');
-      Route::get('/contacts',[HomeController::class, 'contacts'])->name('contacts');
       Route::get('/profiles',[HomeController::class, 'profiles'])->name('profiles');
       Route::get('/query-form',[HomeController::class, 'queryForm'])->name('query');
       Route::post('/query',[HomeController::class, 'querySubmit'])->name('query.submit');

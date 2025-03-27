@@ -30,6 +30,7 @@
     <link href="{{asset('build/css/custom.min.css')}}" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/switchery/0.8.2/switchery.min.css">
+    
 
   </head>
 
@@ -131,6 +132,7 @@
                       <li><a href="{{route('fixed_footer')}}">Fixed Footer</a></li>
                     </ul>
                   </li>
+                  <li><a href="{{route('contacts')}}"><i class="fa fa-windows"></i>Contacts</a></li>
                   <li><a href="{{route('show_query')}}"><i class="fa fa-windows"></i>Users Queries</a></li>
                 </ul>
               </div>
@@ -348,6 +350,7 @@
             </nav>
           </div>
         </div>
+
         <!-- /top navigation -->
 
         @yield('content')

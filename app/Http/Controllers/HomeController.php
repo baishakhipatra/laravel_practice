@@ -158,21 +158,14 @@ class HomeController extends Controller
         return view('additional_pages.e_commerce');
     }
 
-    public function projects()
-    {
-        return view('additional_pages.projects');
-    }
+
 
     public function project_detail()
     {
         return view('additional_pages.project_detail');
     }
 
-    public function contacts()
-    {
-        return view('additional_pages.contacts');
-    }
-
+    
     public function profiles()
     {
         return view('additional_pages.profiles');
@@ -346,5 +339,24 @@ class HomeController extends Controller
 
          return view('index',compact('userMessageCount','messages'));
         }
+    }
+
+    public function contacts()
+    {
+
+        $users = User::where('role' , 'user')->get();
+        return view('contacts', compact('users'));
+    }
+
+    public function view_profile($id)
+    {
+        $user = User::where('role' , 'user')->where('id', $id)->first();
+
+        if(!$user)
+        {
+            return redirect()->back->with('error', 'user not found');
+        }
+        
+        return view('admin.view_profile', compact('user'));
     }
 }

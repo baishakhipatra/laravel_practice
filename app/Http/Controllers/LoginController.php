@@ -27,7 +27,7 @@ class LoginController extends Controller
         ]);
 
 
-
+        
         $user = User::where('email', $request->email)->first();
         if (!$user) {
             return redirect()->back()->withErrors(['email' => 'No Account Found This Email!'])->withInput();
@@ -102,7 +102,7 @@ class LoginController extends Controller
     {
         $user = Auth::guard('web')->check() ? Auth::guard('web')->user() : Auth::guard('user')->user();
     
-        if (!$user) { // If user is NOT authenticated, redirect to login
+        if (!$user) { 
             return redirect()->route('login')->withErrors(['update_error' => 'User not authenticated']);
         }
     
@@ -114,7 +114,7 @@ class LoginController extends Controller
     {
         $user = Auth::guard('web')->check() ? Auth::guard('web')->user() : Auth::guard('user')->user();
     
-        if (!$user) { // If user is NOT authenticated, redirect to login
+        if (!$user) {
             return redirect()->route('login')->withErrors(['update_error' => 'User not authenticated']);
         }
     
@@ -130,8 +130,6 @@ class LoginController extends Controller
         try {
             $user->password = bcrypt($request->password);
             $user->save();
-    
-            // Redirect dynamically based on the user role
             return redirect()->route(
                 Auth::guard('web')->check() ? 'admin.profile' : 'user.profile'
             )->with('success', 'Password updated successfully');
