@@ -101,7 +101,10 @@ Route::prefix('user')->middleware(['auth_user'])->group(function(){
       Route::get('/projects',[ProjectController::class, 'projects'])->name('projects');
       Route::get('projects/add',[ProjectController::class, 'projectsAdd'])->name('project.add');
       Route::post('/projects/store',[ProjectController::class, 'projectsStore'])->name('project.store');
-
+      Route::get('/projects/view/{id}',[ProjectController::class, 'view_project'])->name('project.view');
+      Route::get('/delete/{id}',[ProjectController::class, 'project_delete'])->name('project.delete');
+      Route::get('/project/edit/{id}',[ProjectController::class, 'projectEditForm'])->name('project.edit.form');
+      Route::post('/project/update',[ProjectController::class, 'projectUpdate'])->name('project.update');
 
 
       Route::get('/project-detail',[HomeController::class, 'project_detail'])->name('project_detail');

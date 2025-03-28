@@ -53,11 +53,44 @@
                                         </div>
 
                                         <div class="form-group mb-4">
+                                            <label for="about" class="control-label col-md-3 col-sm-3 col-xs-12">About:</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <input type="text" id="about" name="about" class="form-control"
+                                                    value="{{ old('about', $user->about) }}">
+                                                    @error('about')
+                                                    <span class="text-danger">{{$message}}</span>
+                                                    @enderror
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group mb-4">
+                                            <label for="phone" class="control-label col-md-3 col-sm-3 col-xs-12">Phone:</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <input type="number" id="phone" name="phone" class="form-control"
+                                                    value="{{ old('phone', $user->phone) }}">
+                                                    @error('phone')
+                                                    <span class="text-danger">{{$message}}</span>
+                                                    @enderror
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group mb-4">
+                                            <label for="address" class="control-label col-md-3 col-sm-3 col-xs-12">Address:</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <input type="address" id="address" name="address" class="form-control"
+                                                    value="{{ old('address', $user->address) }}">
+                                                    @error('address')
+                                                    <span class="text-danger">{{$message}}</span>
+                                                    @enderror
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group mb-4">
                                             <label for="profile_photo_url"
                                                 class="control-label col-md-3 col-sm-3 col-xs-12">Profile Photo:</label>
                                             <div class="col-md-9 col-sm-9 col-xs-12">
                                                 <input type="file" id="profile_photo_url" name="profile_photo_url"
-                                                    class="form-control">
+                                                    class="form-control" value="{{ old('profile_photo_url', $user->profile_photo_url) }}">
                                                 @if ($user->profile_photo_url)
                                                 <div class="mt-2">
                                                     <img src="{{ asset($user->profile_photo_url) }}" alt="Profile Photo"

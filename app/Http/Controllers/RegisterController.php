@@ -22,6 +22,9 @@ class RegisterController extends Controller
             'email' => 'required|email|max:255|unique:users,email',
             'password' => 'required|string|min:6|confirmed',
             'role' => 'required|in:admin,user',
+            'about' => 'nullable|string|max:500',
+            'phone' => 'required|numeric|max:10',
+            'address' => 'required|string|max:255',
             'profile_photo' => 'required|mimes:jpg,jpeg,png,svg,gif,webp|max:1000',
         ]);
 
@@ -31,6 +34,9 @@ class RegisterController extends Controller
             $data->email = $request->email;
             $data->password = Hash::make($request->password);
             $data->role = $request->role;
+            $data->about = $request->about;
+            $data->phone = $request->phone;
+            $data->address = $request->address;
 
             if ($request->hasFile('profile_photo_url')) {
                 $file = $request->file('profile_photo_url');

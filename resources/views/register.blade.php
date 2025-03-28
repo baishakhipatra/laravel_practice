@@ -83,6 +83,39 @@
                         </div>
 
                         <div class="d-flex flex-row align-items-center mb-4">
+                          <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+                          <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                            <label for="about">About:</label>
+                            <input type="text" id="about" name="about" class="form-control">
+                            @error('about')
+                            <small class="text-danger">{{$message}}</small>
+                            @enderror
+                          </div>
+                        </div>
+
+                        <div class="d-flex flex-row align-items-center mb-4">
+                          <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+                          <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                            <label for="phone">Phone:</label>
+                            <input type="number" id="phone" name="phone" class="form-control">
+                            @error('phone')
+                            <small class="text-danger">{{$message}}</small>
+                            @enderror
+                          </div>
+                        </div>
+
+                        <div class="d-flex flex-row align-items-center mb-4">
+                          <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+                          <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                            <label for="address">Address:</label>
+                            <input type="text" id="address" name="address" class="form-control">
+                            @error('address')
+                            <small class="text-danger">{{$message}}</small>
+                            @enderror
+                          </div>
+                        </div>
+
+                        <div class="d-flex flex-row align-items-center mb-4">
                             <i class="fas fa-key fa-lg me-3 fa-fw"></i>
                             <div data-mdb-input-init class="form-outline flex-fill mb-0">
                                 <label for="profile_photo">Profile Photo:</label>

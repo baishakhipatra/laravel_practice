@@ -343,8 +343,19 @@ class HomeController extends Controller
 
     public function contacts()
     {
-
-        $users = User::where('role' , 'user')->get();
+        
+        $keyword = request()->query('keyword');
+        if ($keyword) {
+            $users = User::where('role', 'user')
+            ->where(function ($query) use ($keyword) {
+                $query->where('name', 'like', "%$keyword%")
+                  ->orWhere('phone', 'like', "%$keyword%")
+                  ->orWhere('address', 'like', "%$keyword%");
+            })
+            ->get();
+        } else {
+            $users = User::where('role', 'user')->get();
+        }
         return view('contacts', compact('users'));
     }
 

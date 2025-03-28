@@ -26,8 +26,7 @@ class LoginController extends Controller
             'password' => 'required|string|min:6',
         ]);
 
-
-        
+ 
         $user = User::where('email', $request->email)->first();
         if (!$user) {
             return redirect()->back()->withErrors(['email' => 'No Account Found This Email!'])->withInput();
@@ -77,12 +76,18 @@ class LoginController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+            'about' => 'nullable|string|max:500',
+            'phone' => 'required|numeric|min:10',
+            'address' => 'required|string|max:255',
             'profile_photo_url' => 'mimes:jpg,jpeg,png,svg,gif,webp|max:1000',
         ]);
 
         try {
             $user->name = $request->name;
             $user->email = $request->email;
+            $user->about = $request->about;
+            $user->phone = $request->phone;
+            $user->address = $request->address;
 
             if ($request->hasFile('profile_photo_url')) {
                 $file = $request->file('profile_photo_url');

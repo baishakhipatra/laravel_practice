@@ -11,18 +11,18 @@
 
             <div class="title_right">
                 <div class="col-md-10 col-sm-10 form-group pull-right top_search">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for...">
-                        <span class="input-group-btn">
-                            <button class="btn btn-secondary" type="button">Go!</button>
-                        </span>
-                        <a href="{{route('project.add')}}" class="btn btn-primary btn-sm">Add project</a>
-                    </div>
-                    <div>
-                        
+                    <form action="{{ route('projects') }}" method="GET">
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="keyword" value="{{ request('keyword') }}" placeholder="Search for...">
+                            <span class="input-group-btn">
+                                <button class="btn btn-secondary" type="submit">Go!</button>
+                            </span>
+                        </div>
+                    </form>
+                    <div class="text-right">
+                    <a href="{{ route('project.add') }}" class="btn btn-primary btn-sm">Add project</a>
                     </div>
                 </div>
-                
             </div>
         </div>
 
@@ -60,7 +60,7 @@
                                     <td>{{$key+1}}</td>
                                     <td>{{$item->project_name}}</td>
                                     <td>{{$item->project_details}}</td>
-                                    <td>{{ str_replace(',', ', ', $project->language_used) }}</td>
+                                    <td>{{$item->language_used }}</td>
                                     <td>{{$item->team_members}}</td>
                                     {{-- <td>{{$item->project_progress}}</td> --}}
                                     <td style="width: 200px">
@@ -81,11 +81,9 @@
                                         <span class="badge bg-warning text-dark">Pending</span>
                                         @endif
                                     </td>
-
                                     <td>
-                                        <a href="" class="btn btn-success">Edit</a>|
-                                        <a href="" class="btn btn-danger">Delete</a>|
-                                        <a href="" class="btn btn-success">View</a>
+                                        <a href="{{route('project.delete', $item->id)}}" class="btn btn-danger">Delete</a>|
+                                        <a href="{{route('project.view', $item->id)}}" class="btn btn-success">View</a>
                                     </td>
                                 </tr>
                                 @endforeach

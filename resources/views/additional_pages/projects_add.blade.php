@@ -19,7 +19,7 @@
 
                                     <div class="form-group mb-4">
                                         <label for="project_name" class="control-label">Project Name:</label>
-                                        <input type="text" id="project_name" name="project_name" class="form-control" placeholder="please enter your project name">
+                                        <input type="text" id="project_name" name="project_name" class="form-control" placeholder="please enter your project name" value="{{old('project_name')}}">
                                         @error('project_name')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -28,7 +28,7 @@
 
                                     <div class="form-group mb-4">
                                         <label for="project_details" class="control-label">Project Details:</label>
-                                        <input type="text" id="project_details" name="project_details" class="form-control" placeholder="please enter your project details">
+                                        <input type="text" id="project_details" name="project_details" class="form-control" placeholder="please enter your project details" value="{{old('project_details')}}">
                                         @error('project_details')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -37,7 +37,7 @@
                                     
                                     <div class="form-group mb-4">
                                         <label for="language_used">Multi Language:</label>
-                                        <select id="language_used" name="language_used[]" class="form-control select2" multiple>
+                                        <select id="language_used" name="language_used" class="form-control" value="{{old('language_used')}}">
                                             <option value="laravel">Laravel</option>
                                             <option value="php">PHP</option>
                                             <option value="html">HTML</option>
@@ -56,7 +56,7 @@
 
                                     <div class="form-group mb-4">
                                         <label for="team_members" class="control-label">Team Members:</label>
-                                        <input type="text" id="team_members" name="team_members" class="form-control" placeholder="please enter your team members">
+                                        <input type="text" id="team_members" name="team_members" class="form-control" placeholder="please enter your team members" value="{{old('team_members')}}">
                                         @error('team_members')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror

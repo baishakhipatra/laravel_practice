@@ -11,12 +11,14 @@
 
         <div class="title_right">
           <div class="col-md-5 col-sm-5  form-group pull-right top_search">
-            <div class="input-group">
-              <input type="text" class="form-control" placeholder="Search for...">
-              <span class="input-group-btn">
-                <button class="btn btn-default" type="button">Go!</button>
-              </span>
-            </div>
+            <form action="{{ route('contacts') }}" method="GET">
+              <div class="input-group">
+                  <input type="text" class="form-control" name="keyword" value="{{ request('keyword') }}" placeholder="Search for...">
+                  <span class="input-group-btn">
+                      <button class="btn btn-secondary" type="submit">Go!</button>
+                  </span>
+              </div>
+          </form>
           </div>
         </div>
       </div>
@@ -38,6 +40,7 @@
                         <ul class="list-unstyled">
                           <li><i class="fa fa-building"></i> Email: {{$user->email ?? 'N/A'}}</li>
                           <li><i class="fa fa-phone"></i> Phone:{{$user->phone ?? 'N/A'}} </li>
+                          <li><i class="fa fa-home"></i> Address:{{$user->address ?? 'N/A'}} </li>
                         </ul>
                       </div>
                       <div class="right col-md-5 col-sm-5 text-center">
@@ -56,9 +59,9 @@
                         </p>
                       </div>
                       <div class=" col-sm-6 emphasis">
-                        {{-- <a href="" class="btn btn-primary btn-sm">
+                        <a href="{{route('admin_chat', $user->id)}}" class="btn btn-primary btn-sm">
                           <i class="fa fa-chat"></i>Chat
-                        </a> --}}
+                        </a>
                        <a href="{{route('view_profile', $user->id)}}" class="btn btn-primary btn-sm">
                         <i class="fa fa-user"></i> View Profile
                        </a>
