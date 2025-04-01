@@ -16,7 +16,6 @@
                             <div class="card-body">
                                 <form action="{{ route('project.store') }}" method="POST">
                                     @csrf
-
                                     <div class="form-group mb-4">
                                         <label for="project_name" class="control-label">Project Name:</label>
                                         <input type="text" id="project_name" name="project_name" class="form-control" placeholder="please enter your project name" value="{{old('project_name')}}">
@@ -67,7 +66,7 @@
                                         <input type="range" id="project_progress" name="project_progress" class="form-control" min="0" max="100" step="1" value="0" oninput="updateProgressBar(this.value)">
                                         
                                         <div class="progress mt-2" style="height: 20px;">
-                                            <div id="progress_bar" class="progress-bar progress-bar-striped progress-bar-animated bg-success" 
+                                            <div id="progress_bar" class="progress-bar progress-bar-striped progress-bar-animated bg-warning" 
                                                 style="width: 0%;">
                                             </div>
                                         </div>

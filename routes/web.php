@@ -135,6 +135,6 @@ Route::prefix('user')->middleware(['auth_user'])->group(function(){
    Route::post('/user/profile/update',[LoginController::class, 'profileUpdate'])->name('user.profile.update');
    Route::get('/user/password',[LoginController::class, 'password'])->name('user.password.update.form');
    Route::post('/user/password/update',[LoginController::class, 'update_password'])->name('user.password.update');
-  
+ 
 });
 

@@ -147,7 +147,6 @@
                       <li><a href="{{route('e_commerce')}}">E-commerce</a></li>
                       <li><a href="{{route('projects')}}">Projects</a></li>
                       <li><a href="{{route('project_detail')}}">Project Detail</a></li>
-                      <li><a href="{{route('contacts')}}">Contacts</a></li>
                       <li><a href="{{route('profiles')}}">Profile</a></li>
                     </ul>
                   </li>

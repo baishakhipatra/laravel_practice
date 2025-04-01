@@ -168,7 +168,12 @@ class HomeController extends Controller
     
     public function profiles()
     {
-        return view('additional_pages.profiles');
+        $user = Auth::guard('web')->check() ? Auth::guard('web')->user() : Auth::guard('user')->user();
+
+        if (!$user) {
+            return redirect()->route('login')->withErrors('User not authenticated');
+        }
+        return view('additional_pages.profiles', compact('user'));
     }
 
     // extras

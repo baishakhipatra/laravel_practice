@@ -49,7 +49,6 @@ class ProjectController extends Controller
             return redirect()->back()->withErrors('User not authenticated');
         }
 
-
         try {
             $project = Project::create([
                 'user_id' => $user->id,  

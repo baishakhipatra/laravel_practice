@@ -16,9 +16,12 @@
                   <input type="text" class="form-control" name="keyword" value="{{ request('keyword') }}" placeholder="Search for...">
                   <span class="input-group-btn">
                       <button class="btn btn-secondary" type="submit">Go!</button>
+                      <a href="{{ url()->current() }}" class="btn btn-sm btn-secondary" data-toggle="tooltip" title="Clear filter">
+                        <i class="fa fa-times"></i>
+                      </a>
                   </span>
-              </div>
-          </form>
+                </div>
+            </form>
           </div>
         </div>
       </div>
