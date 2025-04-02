@@ -10,7 +10,7 @@
         </div>
 
         <div class="title_right">
-          <div class="col-md-5 col-sm-5  form-group pull-right top_search">
+          <div class="col-md-10 col-sm-10  form-group pull-right top_search">
             <form action="{{ route('contacts') }}" method="GET">
               <div class="input-group">
                   <input type="text" class="form-control" name="keyword" value="{{ request('keyword') }}" placeholder="Search for...">
@@ -36,12 +36,13 @@
                 <div class="col-md-4 col-sm-4  profile_details">
                   <div class="well profile_view">
                     <div class="col-sm-12">
-                      <h4 class="brief"><i>User</i></h4>
+                      <h4 class="brief"><h3>{{$user->name}}</h3>
                       <div class="left col-md-7 col-sm-7">
-                        <h2>{{$user->name}}</h2>
+                        <h2>{{$user->designation}}</h2>
                         <p><strong>About: </strong> {{$user->about ?? 'No Bio Available'}} </p>
+                        <p><strong>Specialization: </strong> {{$user->specialization ?? 'No Specialization Available'}} </p>
                         <ul class="list-unstyled">
-                          <li><i class="fa fa-building"></i> Email: {{$user->email ?? 'N/A'}}</li>
+                          <li><i class="fa fa-envelope"></i>Email: {{$user->email ?? 'N/A'}}</li>
                           <li><i class="fa fa-phone"></i> Phone:{{$user->phone ?? 'N/A'}} </li>
                           <li><i class="fa fa-home"></i> Address:{{$user->address ?? 'N/A'}} </li>
                         </ul>

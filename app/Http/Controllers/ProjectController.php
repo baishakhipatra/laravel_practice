@@ -11,13 +11,19 @@ class ProjectController extends Controller
     public function projects()
     {
         $user = Auth::guard('user')->user();
-        $query = Project::query(); 
+        $query = Project::where('user_id', $user->id); 
 
-    
         if (request()->has('keyword') && request('keyword') != '') {
-            $query->where('project_name', 'like', '%' . request('keyword') . '%')
-                  ->orWhere('project_details', 'like', '%' . request('keyword') . '%')
-                  ->orWhere('language_used', 'like', '%' . request('keyword') . '%'); 
+            $keyword = request('keyword');
+
+            $query->where(function($q) use ($keyword){
+                $q->where('project_name', 'like', "%$keyword%")
+                ->orWhere('project_details', 'like', "%$keyword%")
+                ->orWhere('language_used', 'like', "%$keyword%")
+                ->orWhere('team_members', 'like', "%$keyword%")
+                ->orWhere('project_progress', 'like' ,"%$keyword%")
+                ->orWhere('status', 'like' , "%$keyword%");
+            });
         }
     
         $projects = $query->get(); 

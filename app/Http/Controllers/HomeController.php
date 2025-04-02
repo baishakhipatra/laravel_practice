@@ -355,7 +355,11 @@ class HomeController extends Controller
             ->where(function ($query) use ($keyword) {
                 $query->where('name', 'like', "%$keyword%")
                   ->orWhere('phone', 'like', "%$keyword%")
-                  ->orWhere('address', 'like', "%$keyword%");
+                  ->orWhere('address', 'like', "%$keyword%")
+                  ->orWhere('about', 'like', "%$keyword%")
+                  ->orWhere('designation', 'like', "%$keyword%")
+                  ->orWhere('specialization', 'like', "%$keyword%")
+                  ->orWhere('email', 'like', "%$keyword%");
             })
             ->get();
         } else {

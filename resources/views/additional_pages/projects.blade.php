@@ -85,8 +85,14 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <a href="{{route('project.delete', $item->id)}}" class="btn btn-danger">Delete</a>|
-                                        <a href="{{route('project.view', $item->id)}}" class="btn btn-success">View</a>
+                                        {{-- <a href="{{route('project.delete', $item->id)}}" class="btn btn-danger">Delete</a>| --}}
+                                        <form action="{{route('project.delete', $item->id) }}" method="POST" style="display: inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete your projects?')">Delete</button>
+                                        </form>
+                                        <a href="{{route('project.view', $item->id)}}" class="btn btn-success">View</a>|
+                                        <a href="{{route('project.edit.form',$item->id)}}" class="btn btn-success">Edit</a>
                                     </td>
                                 </tr>
                                 @endforeach

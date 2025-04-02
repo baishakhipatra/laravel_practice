@@ -58,7 +58,7 @@
 
                                         <div class="text-right">
                                             <a href="{{route('projects')}}" class="btn btn-danger mt-2">Back</a>
-                                            <a href="{{route('project.edit.form',$project->id)}}" class="btn btn-success mt-2">Edit</a>
+                                            {{-- <a href="{{route('project.edit.form',$project->id)}}" class="btn btn-success mt-2">Edit</a> --}}
                                         </div>
                                     </div> 
                             </div>

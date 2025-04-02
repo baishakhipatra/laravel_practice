@@ -43,6 +43,20 @@
                                         </div>
 
                                         <div class="form-group mb-4">
+                                            <label for="designation" class="control-label col-md-3 col-sm-3 col-xs-12">Designation:</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <input type="text" id="designation" name="designation" class="form-control" value="{{ $user->designation }}" readonly>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group mb-4">
+                                            <label for="specialization" class="control-label col-md-3 col-sm-3 col-xs-12">Specialization:</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <input type="text" id="specialization" name="specialization" class="form-control" value="{{ $user->specialization }}" readonly>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group mb-4">
                                             <label for="address" class="control-label col-md-3 col-sm-3 col-xs-12">Address:</label>
                                             <div class="col-md-9 col-sm-9 col-xs-12">
                                                 <input type="text" id="address" name="address" class="form-control" value="{{ $user->address }}" readonly>
@@ -66,7 +80,7 @@
                                                 <a href="{{route('contacts')}}" class="btn btn-danger">Back</a>
                                             </div>
                                         </div>
-                                    </div>  
+                                    </div> 
                             </div>
                         </div>
                     </div>

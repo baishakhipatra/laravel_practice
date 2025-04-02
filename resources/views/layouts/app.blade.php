@@ -67,7 +67,7 @@
                       <div class="profile_info">
                           <span>Welcome,</span>
                           <h2>{{ $user->name }}</h2><br>
-                          <h2>{{ $user->about }}</h2>
+                          <h2>{{ $user->designation }}</h2>
                       </div>
                   </div>
               @endif

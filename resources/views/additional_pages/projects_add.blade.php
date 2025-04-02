@@ -41,7 +41,7 @@
                                             <option value="php">PHP</option>
                                             <option value="html">HTML</option>
                                             <option value="css">CSS</option>
-                                            <option value="custom_php">Custom PHP</option>
+                                            <option value="custom php">Custom PHP</option>
                                             <option value="codignitor">Codignitor</option>
                                             <option value="javascript">Javascript</option>
                                             <option value="ajax">Ajax</option>

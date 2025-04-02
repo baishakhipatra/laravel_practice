@@ -78,6 +78,8 @@ class LoginController extends Controller
             'email' => 'required|email|max:255|unique:users,email,' . $user->id,
             'about' => 'nullable|string|max:500',
             'phone' => 'required|numeric|min:10',
+            'designation' => 'required',
+            'specialization' => 'required',
             'address' => 'required|string|max:255',
             'profile_photo_url' => 'mimes:jpg,jpeg,png,svg,gif,webp|max:1000',
         ]);
@@ -87,6 +89,8 @@ class LoginController extends Controller
             $user->email = $request->email;
             $user->about = $request->about;
             $user->phone = $request->phone;
+            $user->designation = $request->designation;
+            $user->specialization = $request->specialization;
             $user->address = $request->address;
 
             if ($request->hasFile('profile_photo_url')) {

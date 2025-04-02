@@ -36,10 +36,15 @@
                   </div>
                 </div>
                 <h3>{{$user->name}}</h3>
-
+                <h4><b>{{$user->designation}}</b></h4>
                 <h4>{{$user->about}}</h4>
 
                 <ul class="list-unstyled user_data">
+
+                  <li>
+                    <i class="fa-solid fa-heart user-profile-icon"></i> {{$user->specialization}}
+                  </li>
+
                   <li><i class="fa fa-map-marker user-profile-icon"></i> {{$user->address}}
                   </li>
 

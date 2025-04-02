@@ -104,6 +104,43 @@
                           </div>
                         </div>
 
+
+                        <div class="d-flex flex-row align-items-center mb-4">
+                          <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+                          <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                            <label for="designation">Designation:</label>
+                            <select id="designation" name="designation" class="form-control">
+                              <option value="frontend devloper">Frontend Developer</option>
+                              <option value="backend devloper">Backend Developer</option>
+                              <option value="full stack devloper">Full Stack Developer</option>
+                              <option value="software tester">Software Tester</option>
+                              <option value="project manager">Project Manager</option>
+                              <option value="bussiness administrator">Bussiness Administrator</option>
+                            </select>
+                            @error('designation')
+                            <small class="text-danger">{{$message}}</small>
+                            @enderror
+                          </div>
+                        </div>
+
+                        <div class="d-flex flex-row align-items-center mb-4">
+                          <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+                          <div data-mdb-input-init class="form-outline flex-fill mb-0">
+                            <label for="specialization">Specialization:</label>
+                            <select id="specialization" name="specialization" class="form-control">
+                              <option value="PHP">PHP</option>
+                              <option value="laravel">Laravel</option>
+                              <option value="react">React</option>
+                              <option value="mongodb">MongoDB</option>
+                              <option value="testing">Testing</option>
+                              <option value="custom php">Custom PHP</option>
+                            </select>
+                            @error('specialization')
+                            <small class="text-danger">{{$message}}</small>
+                            @enderror
+                          </div>
+                        </div>
+
                         <div class="d-flex flex-row align-items-center mb-4">
                           <i class="fas fa-key fa-lg me-3 fa-fw"></i>
                           <div data-mdb-input-init class="form-outline flex-fill mb-0">

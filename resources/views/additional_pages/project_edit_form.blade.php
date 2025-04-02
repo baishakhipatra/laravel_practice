@@ -24,7 +24,6 @@
                                 <div class="card-body">
                                     <form action="{{ route('project.update') }}" method="POST">
                                         @csrf
-                                        {{-- @method('PUT') --}}
                                         <div class="form-group">
                                             <label for="project_name">Project Name</label>
                                             <input type="text" class="form-control" id="project_name" name="project_name" value="{{ old('project_name', $project->project_name) }}" required>
@@ -44,11 +43,6 @@
                                             <input type="text" class="form-control" id="team_members" name="team_members" value="{{ old('team_members', $project->team_members) }}" required>
                                         </div>
                                 
-                                        {{-- <div class="form-group">
-                                            <label for="project_progress">Project Progress</label>
-                                            <input type="text" class="form-control" id="project_progress" name="project_progress" value="{{ old('project_progress', $project->project_progress) }}" required>
-                                            <input type="hidden" name="project_id" value="{{$project->id}}">
-                                        </div> --}}
 
                                         <div class="form-group mb-4">
                                             <label for="project_progress" class="control-label">Project Progress:</label>
@@ -56,11 +50,11 @@
                                             
                                             <div class="progress mt-2" style="height: 20px;">
                                                 <div id="progress_bar" class="progress-bar progress-bar-striped progress-bar-animated bg-success" 
-                                                    style="width: 0%;">
+                                                    style="width: {{old('project_progress',$project->project_progress)}};">
                                                 </div>
                                             </div>
                                         
-                                            <p class="mt-2"><span id="progress_value">{{$project->project_progress}}</span>% Complete</p>
+                                            <p class="mt-2"><span id="progress_value">{{old('project_progress', $project->project_progress)}}</span>% Complete</p>
                                         </div>
                             
 
@@ -89,3 +83,23 @@
 </body>
 
 @endsection
+
+<script>
+    function updateProgressBar(value){
+        let progressBar = document.getElementById('progress_bar');
+        let progressText = document.getElementById('progress_value');
+
+        progressBar.style.width = value + "%";
+        progressText.innerText = value;
+    }
+
+    document.addEventListener("DOMContentLoaded", function(){
+        let progressInput = document.getElementById('project_progress');
+
+        updateProgressBar(progressInput.value);
+
+        progressInput.addEventListener("input", function(){
+            updateProgressBar(this.value);
+        });
+    });
+</script>

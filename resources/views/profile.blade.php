@@ -75,6 +75,28 @@
                                         </div>
 
                                         <div class="form-group mb-4">
+                                            <label for="designation" class="control-label col-md-3 col-sm-3 col-xs-12">Designation:</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <input type="text" id="designation" name="designation" class="form-control"
+                                                    value="{{ old('designation', $user->designation) }}">
+                                                    @error('designation')
+                                                    <span class="text-danger">{{$message}}</span>
+                                                    @enderror
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group mb-4">
+                                            <label for="specialization" class="control-label col-md-3 col-sm-3 col-xs-12">Specialization:</label>
+                                            <div class="col-md-9 col-sm-9 col-xs-12">
+                                                <input type="text" id="specialization" name="specialization" class="form-control"
+                                                    value="{{ old('specialization', $user->specialization) }}">
+                                                    @error('specialization')
+                                                    <span class="text-danger">{{$message}}</span>
+                                                    @enderror
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group mb-4">
                                             <label for="address" class="control-label col-md-3 col-sm-3 col-xs-12">Address:</label>
                                             <div class="col-md-9 col-sm-9 col-xs-12">
                                                 <input type="address" id="address" name="address" class="form-control"
@@ -105,6 +127,9 @@
                                     </div>
                                     <div class="row justify-content-end">
                                         <a href="{{ Auth::guard('web')->check() ? route('admin.password.update.form') : route('user.password.update.form') }}" class="btn btn-success">Update Password</a>
+                                    </div>
+                                    <div class="row justify-content-end">
+                                        <a href="{{Auth::guard('web')->check() ? route('index'): route('profiles')}}" class="btn btn-danger">Back</a>
                                     </div>
                                 </form>
                                 
