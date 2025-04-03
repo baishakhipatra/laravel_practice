@@ -90,6 +90,7 @@ Route::get('/', function () {
 
    Route::get('/contacts',[HomeController::class, 'contacts'])->name('contacts');
    Route::get('/view_profile/{id}',[HomeController::class, 'view_profile'])->name('view_profile');
+   Route::post('/make-team-lead/{id}', [HomeController::class, 'makeTeamLead'])->name('makeTeamLead');
  });
 
 Route::prefix('user')->middleware(['auth_user'])->group(function(){
@@ -109,6 +110,10 @@ Route::prefix('user')->middleware(['auth_user'])->group(function(){
 
       Route::get('/project-detail',[HomeController::class, 'project_detail'])->name('project_detail');
       Route::get('/profiles',[HomeController::class, 'profiles'])->name('profiles');
+      Route::get('/team/create/{id}',[HomeController::class, 'createTeam'])->name('team.create');
+      Route::post('/team/store',[HomeController::class, 'storeTeam'])->name('team.store');
+      Route::get('/show-team',[HomeController::class, 'showTeam'])->name('show.team');
+
       Route::get('/query-form',[HomeController::class, 'queryForm'])->name('query');
       Route::post('/query',[HomeController::class, 'querySubmit'])->name('query.submit');
       Route::get('/query-list',[HomeController::class, 'QueryList'])->name('query_list');

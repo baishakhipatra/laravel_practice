@@ -173,7 +173,44 @@ class HomeController extends Controller
         if (!$user) {
             return redirect()->route('login')->withErrors('User not authenticated');
         }
-        return view('additional_pages.profiles', compact('user'));
+
+        $teamLead = User::Where('id', $user->team_lead_id)->first();
+
+
+        return view('additional_pages.profiles', compact('user','teamLead'));
+    }
+
+    public function createTeam($id)
+    {
+        $teamLead = User::find($id);
+
+        if(!$teamLead || !$teamLead->is_team_lead)
+        {
+            return redirect()->back()->with('error','invalid team lead');
+        }
+        $users = User::where('role', 'user' )->whereNull('team_lead_id')->get();
+
+        return view('team.create', compact('teamLead', 'users'));
+    }
+
+    public function storeTeam(Request $request){
+        $request->validate([
+            'team_lead_id' => 'required|exists:users,id',
+            'team_members' => 'required|array',
+            'team_members.*' => 'exists:users,id'
+        ]);
+
+        User::whereIn('id', $request->team_members)->update(['team_lead_id' => $request->team_lead_id]);
+
+        return redirect()->route('profiles', $request->team_lead_id)->with('success', 'team created successfully');
+    }
+
+    public function showTeam()
+    {
+        $teamLeadId = 1;
+
+        $teamMembers = User::Where('team_lead_id', $teamLeadId)->get();
+        return view('team.my_team', compact('teamMembers'));
     }
 
     // extras
@@ -378,5 +415,18 @@ class HomeController extends Controller
         }
         
         return view('admin.view_profile', compact('user'));
+    }
+
+    public function makeTeamLead($id)
+    {
+        $user = User::find($id);
+        if ($user) {
+            $user->is_team_lead = 1; 
+            $user->team_lead_id = null;
+            $user->save();
+            
+            return redirect()->back()->with('success', 'User has been assigned as a Team Lead.');
+        }
+        return redirect()->back()->with('error', 'User not found.');
     }
 }

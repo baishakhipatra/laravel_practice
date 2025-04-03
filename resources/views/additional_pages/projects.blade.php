@@ -99,7 +99,6 @@
                             </tbody>
                         </table>
                         <!-- end project list -->
-
                     </div>
                 </div>
             </div>

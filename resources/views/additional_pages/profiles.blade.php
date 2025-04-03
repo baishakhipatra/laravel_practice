@@ -35,6 +35,22 @@
                     <img class="img-responsive avatar-view" src="{{ asset($user->profile_photo_url) }}" alt="Avatar" title="Change the avatar" width="180" height="180">
                   </div>
                 </div>
+
+                @if($user->is_team_lead)
+                 <span class="btn btn-success">Team Lead</span>
+                @elseif($teamLead)
+                  <h4><p><strong>Team Lead Name:</strong>{{$teamLead->name}}</p></h4>
+                @endif
+
+                @if($user->is_team_lead)
+                <a href="{{route("team.create", $user->id)}}" class= "btn btn-primary">Create Team</a>
+                @endif
+
+                {{-- @if($user->is_team_lead)
+                <a href="{{ route('show.team') }}" class="btn btn-primary">My Team</a>
+                @endif --}}
+
+
                 <h3>{{$user->name}}</h3>
                 <h4><b>{{$user->designation}}</b></h4>
                 <h4>{{$user->about}}</h4>

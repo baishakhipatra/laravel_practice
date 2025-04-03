@@ -30,6 +30,20 @@
 
       <div class="row">
           <div class="x_panel">
+            @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+            @endif
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <div class="x_content">
                 <div class="clearfix"></div>
               @foreach ($users as $user)
@@ -62,7 +76,17 @@
                           <a href="#"><span class="fa fa-star-o"></span></a>
                         </p>
                       </div>
-                      <div class=" col-sm-6 emphasis">
+                      <div>
+                        @if(!$user->is_team_lead)
+                        <form action="{{ route('makeTeamLead', $user->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-primary">Make Team Lead</button>
+                        </form>
+                        @else
+                            <span class="btn btn-success">Team Lead</span>
+                        @endif
+                      </div>
+                      <div class="text-right">
                         <a href="{{route('admin_chat', $user->id)}}" class="btn btn-primary btn-sm">
                           <i class="fa fa-chat"></i>Chat
                         </a>
