@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Query;
 use App\Models\Chat;
 use App\Models\User;
+use App\Models\Team;
 
 class HomeController extends Controller
 {
@@ -176,8 +177,12 @@ class HomeController extends Controller
 
         $teamLead = User::Where('id', $user->team_lead_id)->first();
 
-
-        return view('additional_pages.profiles', compact('user','teamLead'));
+        $members = [];
+        if ($teamLead) {
+            $teamMemberIds = explode(',', $team->team_members);
+            $members = User::whereIn('id', $teamMemberIds)->get();
+        }
+        return view('additional_pages.profiles', compact('user','teamLead', 'members'));
     }
 
     public function createTeam($id)
@@ -188,30 +193,86 @@ class HomeController extends Controller
         {
             return redirect()->back()->with('error','invalid team lead');
         }
-        $users = User::where('role', 'user' )->whereNull('team_lead_id')->get();
+        $assignedIds = collect(Team::pluck('team_members'))
+        ->filter()
+        ->flatMap(function ($memberString) {
+            return explode(',', $memberString);
+        })
+        ->unique()
+        ->toArray();
+
+        $users = User::where('role', 'user')
+                  ->where('is_team_lead', '!=', 1)
+        ->whereNotIn('id', $assignedIds)
+        ->get();
+        
+        // dd($users);
 
         return view('team.create', compact('teamLead', 'users'));
     }
 
-    public function storeTeam(Request $request){
+    public function storeTeam(Request $request)
+    {
+        // dd($request->all());
         $request->validate([
+            'team_name' => 'required|string|max:255',
             'team_lead_id' => 'required|exists:users,id',
             'team_members' => 'required|array',
             'team_members.*' => 'exists:users,id'
         ]);
 
-        User::whereIn('id', $request->team_members)->update(['team_lead_id' => $request->team_lead_id]);
+        $teamMembersString = implode(',', $request->team_members);
 
-        return redirect()->route('profiles', $request->team_lead_id)->with('success', 'team created successfully');
+        //dd($teamMembersString);
+        $team = Team::create([
+            'team_name' => $request->team_name,
+            'team_lead_id' => $request->team_lead_id,
+            'team_members' => $teamMembersString,
+        ]);
+
+        $team->save();
+        
+        return redirect()->route('profiles', $request->team_lead_id)->with('success', 'Team created successfully');
     }
 
-    public function showTeam()
+
+    public function showTeam($id)
     {
-        $teamLeadId = 1;
-
-        $teamMembers = User::Where('team_lead_id', $teamLeadId)->get();
-        return view('team.my_team', compact('teamMembers'));
+        $teamLead = User::find($id);
+        if(!$teamLead || !$teamLead->is_team_lead)
+        {
+            return redirect()->back()->with('error','invalid team lead');
+        }
+        $team = Team::where('team_lead_id', $id)->first();
+        if(!$team)
+        {
+            return redirect()->back()->with('error','No Team Found');
+        }
+        $teamMembers = explode(',', $team->team_members);
+        $teamMembers = User::whereIn('id', $teamMembers)->get();
+         //dd($teamMembers);
+        return view('team.my_team', compact('teamLead', 'teamMembers'));
     }
+
+    public function addMember($id)
+    {
+        $teamLead = User::find($id);
+        if(!$teamLead || !$teamLead->is_team_lead)
+        {
+            return redirect()->back()->with('error','invalid team lead');
+        }
+        $assignIds = collect(Team::pluck('team_members'));
+        $assignIds = $assignIds->filter()
+        ->flatmap(function ($memberString){
+            return explode(',', $memberString);
+        });
+        $assignIds = $assignIds->unique()->toArray();
+        $users = User::where('role', 'user')
+        ->where('is_team_lead', '!=', 1)
+        ->whereNotIn('id', $assignIds)
+        ->get();
+    }
+
 
     // extras
 
@@ -417,16 +478,25 @@ class HomeController extends Controller
         return view('admin.view_profile', compact('user'));
     }
 
-    public function makeTeamLead($id)
+    public function toggleTeamLead($id)
     {
         $user = User::find($id);
-        if ($user) {
-            $user->is_team_lead = 1; 
-            $user->team_lead_id = null;
+        
+        if($user)
+        {
+            if($user->is_team_lead)
+            {
+                $user->is_team_lead = 0;
+                $user->team_lead_id = null;
+                $message = 'User has been removed from team lead';
+            }else{
+                $user->is_team_lead = 1;
+                $user->team_lead_id = null;
+                $message = 'User has been assigned as a team lead';
+            }
             $user->save();
-            
-            return redirect()->back()->with('success', 'User has been assigned as a Team Lead.');
+            return redirect()->back()->with('success', $message);
         }
-        return redirect()->back()->with('error', 'User not found.');
-    }
+        return redirect()->back()->with('error', 'user not found');
+    } 
 }

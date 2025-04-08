@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\InvoiceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -90,7 +91,7 @@ Route::get('/', function () {
 
    Route::get('/contacts',[HomeController::class, 'contacts'])->name('contacts');
    Route::get('/view_profile/{id}',[HomeController::class, 'view_profile'])->name('view_profile');
-   Route::post('/make-team-lead/{id}', [HomeController::class, 'makeTeamLead'])->name('makeTeamLead');
+   Route::post('/toggle-team-lead/{id}',[HomeController::class, 'toggleTeamLead'])->name('toggleTeamLead');
  });
 
 Route::prefix('user')->middleware(['auth_user'])->group(function(){
@@ -110,9 +111,14 @@ Route::prefix('user')->middleware(['auth_user'])->group(function(){
 
       Route::get('/project-detail',[HomeController::class, 'project_detail'])->name('project_detail');
       Route::get('/profiles',[HomeController::class, 'profiles'])->name('profiles');
+
       Route::get('/team/create/{id}',[HomeController::class, 'createTeam'])->name('team.create');
       Route::post('/team/store',[HomeController::class, 'storeTeam'])->name('team.store');
-      Route::get('/show-team',[HomeController::class, 'showTeam'])->name('show.team');
+      Route::get('/show-team/{id}',[HomeController::class, 'showTeam'])->name('show.team');
+
+      Route::get('/add-member/{id}',[HomeController::class, 'addMember'])->name('add.member');
+      Route::post('/add-member/store',[HomeController::class, 'addmemberStore'])->name('add.member.store');
+
 
       Route::get('/query-form',[HomeController::class, 'queryForm'])->name('query');
       Route::post('/query',[HomeController::class, 'querySubmit'])->name('query.submit');
@@ -140,6 +146,12 @@ Route::prefix('user')->middleware(['auth_user'])->group(function(){
    Route::post('/user/profile/update',[LoginController::class, 'profileUpdate'])->name('user.profile.update');
    Route::get('/user/password',[LoginController::class, 'password'])->name('user.password.update.form');
    Route::post('/user/password/update',[LoginController::class, 'update_password'])->name('user.password.update');
+
+   // invoice section 
+
+   Route::get('/invoice',[InvoiceController::class, 'invoice'])->name('invoice');
+   Route::post('/invoice/store',[InvoiceController::class, 'invoiceStore'])->name('invoice.store');
+   Route::post('/invoice/submit',[InvoiceController::class, 'submitInvoice'])->name('submit.invoice');
  
 });
 

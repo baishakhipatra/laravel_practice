@@ -31,6 +31,10 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/switchery/0.8.2/switchery.min.css">
     
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    <!-- Toastr CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
   </head>
 
@@ -180,6 +184,7 @@
                   <li><a href="javascript:void(0)"><i class="fa fa-laptop"></i> Landing Page <span class="label label-success pull-right">Coming Soon</span></a></li>
                   {{-- <li><a href="{{route('query')}}"><i class="fa fa-windows"></i> Add Query</a></li> --}}
                   <li><a href="{{route('query_list')}}"><i class="fa fa-windows"></i> Chat With Admin</a></li>
+                  <li><a href="{{route('invoice')}}"><i class="fa fa-windows"></i> Buy Products</a></li>
                 </ul>
               </div>
               @endif
@@ -313,6 +318,22 @@
             });
         });
     </script>
+
+    
+<!-- jQuery and Toastr JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script>
+        @if(session('success'))
+            $(document).ready(function() {
+                toastr.success("{{ session('success') }}");
+            });
+        @endif
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
     <!-- jQuery -->
     <script src="{{asset('vendors/jquery/dist/jquery.min.js')}}"></script>
     <!-- Bootstrap -->
@@ -353,6 +374,7 @@
 
     <!-- Custom Theme Scripts -->
     <script src="{{asset('build/js/custom.min.js')}}"></script>
-	
+
+	  @yield('scripts')
   </body>
 </html>

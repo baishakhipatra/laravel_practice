@@ -77,22 +77,22 @@
                         </p>
                       </div>
                       <div>
-                        @if(!$user->is_team_lead)
-                        <form action="{{ route('makeTeamLead', $user->id) }}" method="POST">
-                            @csrf
-                            <button type="submit" class="btn btn-primary">Make Team Lead</button>
+                        <form action="{{ route('toggleTeamLead', $user->id)}}" method="POST">
+                          @csrf
+                          @if($user->is_team_lead)
+                          <button class="btn btn-danger btn-sm" type="submit">Remove Team Lead</button>
+                          @else
+                          <button class="btn btn-primary btn-sm" type="submit">Make Team Lead</button>
+                          @endif
                         </form>
-                        @else
-                            <span class="btn btn-success">Team Lead</span>
-                        @endif
                       </div>
                       <div class="text-right">
                         <a href="{{route('admin_chat', $user->id)}}" class="btn btn-primary btn-sm">
                           <i class="fa fa-chat"></i>Chat
                         </a>
-                       <a href="{{route('view_profile', $user->id)}}" class="btn btn-primary btn-sm">
-                        <i class="fa fa-user"></i> View Profile
-                       </a>
+                        <a href="{{route('view_profile', $user->id)}}" class="btn btn-primary btn-sm">
+                          <i class="fa fa-user"></i> View Profile
+                        </a>
                       </div>
                     </div>
                   </div>
