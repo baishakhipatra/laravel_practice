@@ -9,12 +9,22 @@ use App\Models\Query;
 use App\Models\Chat;
 use App\Models\User;
 use App\Models\Team;
+use App\Models\Invoice;
+use App\Models\Product;
+use App\Models\Project;
+use App\Models\InvoiceItem;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        return view('index');
+        $totalUsers = User::where('role', 'user')->count();
+        $totalInvoices = Invoice::count();
+        $totalProducts = Product::count();
+        $totalProjects = Project::count();
+        $totalTeams = Team::count();
+        $totalAmounts = Invoice::sum('total_amount');
+        return view('index',compact('totalUsers','totalInvoices', 'totalProducts', 'totalProjects','totalTeams','totalAmounts'));
     }
 
     public function dashboard_two()

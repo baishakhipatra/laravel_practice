@@ -2,10 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Invoice</title>
   
   <!-- Bootstrap 4 CDN -->
+  
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   
   <!-- Font Awesome for icons -->
@@ -121,27 +124,24 @@
 </style>
 </head>
 <body>
-@if(session('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ session('success') }}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-@endif
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
 
-@if(session('error'))
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        {{ session('error') }}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-@endif
+    @if(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
 
-
-<form method="POST" action="{{route('submit.invoice')}}" id="invoiceForm">
-    @csrf
     <div id="invoice">
         <div class="container">
         <div class="receipt-main">
@@ -187,9 +187,13 @@
                         <option value="{{ $product->id }}" data-price="{{ $product->price }}">{{ $product->product_name }}</option>
                         @endforeach
                         </select>
-                        @error('product_name')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
+                        <small class="text-danger error-message"></small>
+
+                        <small class="text-danger error-message">
+                            @if($errors->has('product_id.0'))
+                                {{ $errors->first('product_id.0') }}
+                            @endif
+                        </small>                        
                     </td>
                     <td>
                         <div class="input-group">
@@ -233,104 +237,163 @@
                 <p class="text-muted">Thanks for shopping with us!</p>
             </div>
             <div class="col-md-4 text-right">
-                <button class="btn btn-primary print-btn" onclick="printInvoice()">Print</button><br>
-                <button class="btn btn-primary print-btn">Submit</button>
+                <button type="button" class="btn btn-primary print-btn" onclick="printInvoice()">Print</button><br>
             </div>   
             </div>
         </div>
         </div>
     </div>
-</form>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-  function calculateAmount(row) {
-    const price = parseFloat(row.find('.product-select option:selected').data('price')) || 0;
-    const qty = parseInt(row.find('.quantity').val()) || 1;
-    const amount = price * qty;
-    row.find('.amount').val(amount.toFixed(2));
-    return amount;
-  }
+    function calculateAmount(row) {
+        const price = parseFloat(row.find('.product-select option:selected').data('price')) || 0;
+        const qty = parseInt(row.find('.quantity').val()) || 1;
+        const amount = price * qty;
+        row.find('.amount').val(amount.toFixed(2));
+        return amount;
+    }
 
-  function updateTotal() {
-    let total = 0;
-    $('.product-select').each(function () {
-      const row = $(this).closest('tr');
-      total += calculateAmount(row);
+    function updateTotal() {
+        let total = 0;
+        $('.product-select').each(function () {
+        const row = $(this).closest('tr');
+        total += calculateAmount(row);
+        });
+        $('#totalAmount').text(total.toFixed(2));
+        $('#amountInWords').text(numberToWords(Math.floor(total)) + "Rupees Only");
+    }
+
+    function updateProductDropdowns() {
+        let selectedValues = [];
+
+        $('.product-select').each(function (){
+            let val = $(this).val();
+            if (val) selectedValues.push(val);
+        });
+
+        $('.product-select').each(function (){
+            let currentSelect = $(this);
+            let currentVal = currentSelect.val();
+
+            currentSelect.find('option').show();
+
+            currentSelect.find('option').each(function (){
+                let optionVal = $(this).val();
+
+                if (optionVal && optionVal != currentVal && selectedValues.includes(optionVal)) {
+                    $(this).hide();
+                }
+            });
+        });
+    }
+
+    $(document).on('change', '.product-select', function(){
+        updateProductDropdowns();
     });
-    $('#totalAmount').text(total.toFixed(2));
-    $('#amountInWords').text(numberToWords(Math.floor(total)) + "Rupees Only");
-  }
   
 
-$(document).ready(function () {
+    $(document).ready(function() {
+        $('#addRow').click(function () {
+        const newRow = $('#invoiceBody tr:first').clone();
 
-    $('#addRow').click(function () {
-    const newRow = $('#invoiceBody tr:first').clone();
+        newRow.find('select').val('');
+        newRow.find('.quantity').val(1);
+        newRow.find('.amount').val(0);
 
-    newRow.find('select').val('');
-    newRow.find('.quantity').val(1);
-    newRow.find('.amount').val(0);
-
-    $('#invoiceBody').append(newRow);
-    updateTotal();
-    });
-
-    $(document).on('click', '.remove-row', function () {
-    if ($('#invoiceBody tr').length > 1) {
-        $(this).closest('tr').remove();
+        $('#invoiceBody').append(newRow);
         updateTotal();
-    }
+        updateProductDropdowns();
+        });
+
+        $(document).on('click', '.remove-row', function () {
+        if ($('#invoiceBody tr').length > 1) {
+            $(this).closest('tr').remove();
+            updateTotal();
+        }
+        });
+
+
+        $('#addRow').on('click', function () {
+        let hasError = false;
+
+        $('.product-select').each(function () {
+            let value = $(this).val();
+            let errorField = $(this).closest('td').find('.error-message');
+
+            if (value === '') {
+                errorField.text('Please select a product for this row.');
+                hasError = true;
+            } else {
+                errorField.text('');
+            }
+        });
+
+        if (hasError) {
+            return false; 
+        }
+        });
+
+        $(document).on('change', '.product-select', function () {
+        let selectedVal = $(this).val();
+        let errorMsg = $(this).closest('td').find('.error-message');
+
+        if (selectedVal !== '') {
+            errorMsg.text(''); 
+        }
+        });
+
+
+        $(document).on('change keyup', '.product-select, .quantity', function () {
+        const row = $(this).closest('tr');
+        calculateAmount(row);
+        updateTotal();
+        });
+
+        $(document).on('click', '.btn-qty', function () {
+        const input = $(this).closest('.input-group').find('.quantity');
+        let currentQty = parseInt(input.val()) || 1;
+
+        if ($(this).hasClass('plus')) {
+            currentQty++;
+        } else if ($(this).hasClass('minus')) {
+            currentQty = Math.max(1, currentQty - 1);
+        }
+
+        input.val(currentQty);
+        const row = $(this).closest('tr');
+        calculateAmount(row);
+        updateTotal();
+        });
     });
 
-    $(document).on('change keyup', '.product-select, .quantity', function () {
-    const row = $(this).closest('tr');
-    calculateAmount(row);
-    updateTotal();
-    });
+    function numberToWords(num) {
+        const a = [
+            ' ', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine',
+            'Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen',
+            'Seventeen', 'Eighteen', 'Nineteen'
+        ];
+        const b = [' ', ' ', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
 
-    $(document).on('click', '.btn-qty', function () {
-    const input = $(this).closest('.input-group').find('.quantity');
-    let currentQty = parseInt(input.val()) || 1;
-
-    if ($(this).hasClass('plus')) {
-        currentQty++;
-    } else if ($(this).hasClass('minus')) {
-        currentQty = Math.max(1, currentQty - 1);
+        function convert(n) {
+            if (n < 20) return a[n];
+            if (n < 100) return b[Math.floor(n / 10)] + (n % 10 ? " " + a[n % 10] : "");
+            if (n < 1000) return a[Math.floor(n / 100)] + " Hundred" + (n % 100 ? " and " + convert(n % 100) : "");
+            if (n < 100000) return convert(Math.floor(n / 1000)) + " Thousand" + (n % 1000 ? " " + convert(n % 1000) : "");
+            if (n < 10000000) return convert(Math.floor(n / 100000)) + " Lakh" + (n % 100000 ? " " + convert(n % 100000) : "");
+            return convert(Math.floor(n / 10000000)) + " Crore" + (n % 10000000 ? " " + convert(n % 10000000) : "");
+        }
+        return num === 0 ? "Zero" : convert(num) + "Rupees Only";
     }
 
-    input.val(currentQty);
-    const row = $(this).closest('tr');
-    calculateAmount(row);
-    updateTotal();
-    });
-});
-
-function numberToWords(num) {
-    const a = [
-        ' ', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine',
-        'Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen',
-        'Seventeen', 'Eighteen', 'Nineteen'
-    ];
-    const b = [' ', ' ', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
-
-    function convert(n) {
-        if (n < 20) return a[n];
-        if (n < 100) return b[Math.floor(n / 10)] + (n % 10 ? " " + a[n % 10] : "");
-        if (n < 1000) return a[Math.floor(n / 100)] + " Hundred" + (n % 100 ? " and " + convert(n % 100) : "");
-        if (n < 100000) return convert(Math.floor(n / 1000)) + " Thousand" + (n % 1000 ? " " + convert(n % 1000) : "");
-        if (n < 10000000) return convert(Math.floor(n / 100000)) + " Lakh" + (n % 100000 ? " " + convert(n % 100000) : "");
-        return convert(Math.floor(n / 10000000)) + " Crore" + (n % 10000000 ? " " + convert(n % 10000000) : "");
-    }
-
-    return num === 0 ? "Zero" : convert(num) + "Rupees Only";
-}
-
-function printInvoice() {
+    function printInvoice() {
     const selects = document.querySelectorAll('.product-select');
+    const quantities = document.querySelectorAll('input[name="quantity[]"]');
+    const amounts = document.querySelectorAll('input[name="amount[]"]');
     let allValid = true;
 
-    document.querySelectorAll('.product-error').forEach(el => el.remove());
+    document.querySelectorAll('.error-message').forEach(el => el.remove());
+
     selects.forEach((select, index) => {
         if (select.value === '') {
             allValid = false;
@@ -341,11 +404,52 @@ function printInvoice() {
             select.parentNode.appendChild(errorDiv);
         }
     });
+
     if (!allValid) {
-        return; 
+        return;
     }
-    window.print();
-}
+
+    const formData = new FormData();
+
+    selects.forEach((select, index) => {
+        formData.append('product_id[]', select.value);
+        formData.append('quantity[]', quantities[index].value);
+        formData.append('amount[]', amounts[index].value);
+    });
+    //console.log(formData);
+    // Include CSRF token
+    const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    fetch("{{ route('submit.invoice') }}", {
+        method: "POST",
+        headers: {
+            "X-CSRF-TOKEN": token
+        },
+        body: formData 
+    })
+    .then(response => {
+        if (response.ok) {
+            return response.json(); 
+        } else {
+            throw new Error('Network response was not ok.');
+        }
+    })
+    .then(data => {
+    
+        // console.log("Invoice submitted:", data);
+        // window.print(); 
+        if (data.success) {
+        window.print();
+        } else {
+            alert(data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error submitting invoice:', error);
+        alert('Failed to submit invoice.');
+    });
+    }
+
 </script>
 </body>
 </html>

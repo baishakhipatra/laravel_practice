@@ -8,6 +8,8 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\WalletController;
 
 /*
 |--------------------------------------------------------------------------
@@ -92,6 +94,8 @@ Route::get('/', function () {
    Route::get('/contacts',[HomeController::class, 'contacts'])->name('contacts');
    Route::get('/view_profile/{id}',[HomeController::class, 'view_profile'])->name('view_profile');
    Route::post('/toggle-team-lead/{id}',[HomeController::class, 'toggleTeamLead'])->name('toggleTeamLead');
+
+   Route::get('/all/invoices',[OrderController::class, 'allInvoices'])->name('all.invoices');
  });
 
 Route::prefix('user')->middleware(['auth_user'])->group(function(){
@@ -152,6 +156,23 @@ Route::prefix('user')->middleware(['auth_user'])->group(function(){
    Route::get('/invoice',[InvoiceController::class, 'invoice'])->name('invoice');
    Route::post('/invoice/store',[InvoiceController::class, 'invoiceStore'])->name('invoice.store');
    Route::post('/invoice/submit',[InvoiceController::class, 'submitInvoice'])->name('submit.invoice');
+
+   Route::get('/my-orders',[OrderController::class, 'myOrders'])->name('my.orders');
+   Route::get('/view/orders/{date}',[OrderController::class, 'viewOrders'])->name('view.orders');
+
+   // wallet recharge
+
+   Route::get('/wallet',[WalletController::class, 'walletView'])->name('wallet.show');
+   Route::get('/wallet/Recharge/',[WalletController::class, 'walletCreate'])->name('wallet.create');
+   Route::post('/recharge/store',[WalletController::class, 'walletStore'])->name('wallet.store');
+
+
+//    //wallets
+// Route::middleware(['auth'])->prefix('wallet')->group(function (){
+//    Route::get('/', [WalletController::class, 'view'])->name('wallet.show');
+//    Route::get('/recharge', [WalletController::class, 'create'])->name('wallet.create');
+//    Route::post('/recharge', [WalletController::class, 'store'])->name('wallet.store');
+//   });
  
 });
 

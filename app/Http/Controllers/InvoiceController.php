@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\Invoice;
 use Illuminate\Support\Facades\DB;
 use App\Models\InvoiceItem;
+use App\Models\Wallet;
 
 
 class InvoiceController extends Controller
@@ -38,15 +39,9 @@ class InvoiceController extends Controller
             'product_name.*.exists' => 'Selected product does not exist.',
         ]);
     }
-
+    
     public function submitInvoice(Request $request)
     {
-        $request->validate([
-            'product_id.*' => 'required|exists:products,id',
-            'quantity.*' => 'required|integer|min:1',
-            'amount.*' => 'required|numeric|min:0',
-        ]);
-    
         $user = Auth::guard('web')->check() ? Auth::guard('web')->user() : Auth::guard('user')->user();
         if (!$user) {
             return redirect()->route('login')->withErrors('User not authenticated');
@@ -61,6 +56,15 @@ class InvoiceController extends Controller
             $totalAmount += $amount;
             $totalQuantity += $quantity;
         }
+
+        $wallet = Wallet::where('user_id', $user->id)->first();
+
+        if(!$wallet || $wallet->wallet_balance < $totalAmount) {
+            return response()->json(['success' => false, 'message' => 'Enough balance required to buy this product']);
+        }
+
+        $wallet->wallet_balance -= $totalAmount;
+        $wallet->save();
   
         $invoice = Invoice::create([
             'customer_id' => $user->id,
@@ -72,7 +76,7 @@ class InvoiceController extends Controller
     
         foreach ($request->product_id as $index => $productId) {
             $product = Product::find($productId);
-            $piecePerAmount = $product ? $product->price : 0;
+            $piecePerAmount = $product ? $product->price:0;
 
             InvoiceItem::create([
                 'invoice_id' => $invoice->id,
@@ -82,7 +86,6 @@ class InvoiceController extends Controller
                 'piece_per_amount' => $piecePerAmount,
             ]);
         }
-    
-        return redirect()->route('invoice')->with('success', 'Invoice submitted successfully.');
+        return response()->json(['success' => true, 'message' => 'Invoice submitted successfully.']);
     }
 }

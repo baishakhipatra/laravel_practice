@@ -35,7 +35,9 @@
 
     <!-- Toastr CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-
+    <link
+    href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+    rel="stylesheet"/>
   </head>
 
   <body class="nav-md">
@@ -78,7 +80,7 @@
 
             <!-- /menu profile quick info -->
 
-            <br />
+            <br/>
 
             <!-- sidebar menu -->
             <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
@@ -139,6 +141,7 @@
                   </li>
                   <li><a href="{{route('contacts')}}"><i class="fa fa-windows"></i>Contacts</a></li>
                   <li><a href="{{route('show_query')}}"><i class="fa fa-windows"></i>Users Queries</a></li>
+                  <li><a href="{{route('all.invoices')}}"><i class="fa fa-truck"></i>All invoices</a></li>
                 </ul>
               </div>
               @endif
@@ -185,6 +188,8 @@
                   {{-- <li><a href="{{route('query')}}"><i class="fa fa-windows"></i> Add Query</a></li> --}}
                   <li><a href="{{route('query_list')}}"><i class="fa fa-windows"></i> Chat With Admin</a></li>
                   <li><a href="{{route('invoice')}}"><i class="fa fa-windows"></i> Buy Products</a></li>
+                  <li><a href="{{route('my.orders')}}"><i class="fa fa-windows"></i> My orders</a></li>
+                  <li><a href="{{route('wallet.show')}}"><i class="ri-wallet-fill"></i> Recharge Wallet</a></li>
                 </ul>
               </div>
               @endif
