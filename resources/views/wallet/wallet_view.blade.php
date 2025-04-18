@@ -16,7 +16,7 @@
                                     </div>
                                     <div class="card-body">
                                         <h5 class="card-title">Your current balance is:</h5>
-                                        <h2><p><strong>Wallet Balance:</strong> {{env('CURRENCY')}}{{ number_format($active_balance, 2)}}</p></h2>
+                                        <h2><p><strong>Wallet Balance:</strong> {{env('CURRENCY')}}{{ number_format($totalBalance, 2)}}</p></h2>
                                         <a href="{{ route('wallet.create') }}" class="btn btn-secondary">Add More</a>
                                     </div>
                                 </div>
@@ -27,7 +27,7 @@
                                         <thead>
                                             <tr>
                                                 <th>No.</th>
-                                                <th>Recharge Amount</th>
+                                                <th>Last Recharge Amount</th>
                                                 <th>Recharged on</th>
                                             </tr>
                                         </thead>
@@ -35,7 +35,7 @@
                                             @php
                                                 $sl = 0;
                                             @endphp
-                                            @forelse($wallet as $index=>$item)
+                                            @forelse($wallets as $index=>$item)
                                             @php
                                             $sl++;
                                             @endphp
@@ -54,7 +54,6 @@
                                         </tbody>
                                     </table>
                                 </div>
-                               
                             </div>
                         </div>
                     </div>

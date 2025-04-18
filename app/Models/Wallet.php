@@ -20,5 +20,4 @@ class Wallet extends Model
     {
         return $this->hasOne(Wallet::class);
     }
-
 }

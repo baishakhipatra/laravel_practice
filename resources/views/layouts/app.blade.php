@@ -142,6 +142,7 @@
                   <li><a href="{{route('contacts')}}"><i class="fa fa-windows"></i>Contacts</a></li>
                   <li><a href="{{route('show_query')}}"><i class="fa fa-windows"></i>Users Queries</a></li>
                   <li><a href="{{route('all.invoices')}}"><i class="fa fa-truck"></i>All invoices</a></li>
+                  <li><a href="{{route('all.ledger')}}"><i class="fa-solid fa-barcode"></i>All Ledger</a></li>
                 </ul>
               </div>
               @endif
@@ -190,6 +191,7 @@
                   <li><a href="{{route('invoice')}}"><i class="fa fa-windows"></i> Buy Products</a></li>
                   <li><a href="{{route('my.orders')}}"><i class="fa fa-windows"></i> My orders</a></li>
                   <li><a href="{{route('wallet.show')}}"><i class="ri-wallet-fill"></i> Recharge Wallet</a></li>
+                  <li><a href="{{route('ledger')}}"><i class="fa-solid fa-barcode"></i> Ledger</a></li>
                 </ul>
               </div>
               @endif

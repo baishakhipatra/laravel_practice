@@ -10,6 +10,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\WalletController;
+use App\Http\Controllers\LedgerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -96,6 +97,10 @@ Route::get('/', function () {
    Route::post('/toggle-team-lead/{id}',[HomeController::class, 'toggleTeamLead'])->name('toggleTeamLead');
 
    Route::get('/all/invoices',[OrderController::class, 'allInvoices'])->name('all.invoices');
+
+   Route::get('all/ledger',[LedgerController::class, 'allLedger'])->name('all.ledger');
+
+   Route::get('all/ledger/download', [LedgerController::class, 'allLedgerDownload'])->name('all.ledger.download');
  });
 
 Route::prefix('user')->middleware(['auth_user'])->group(function(){
@@ -166,6 +171,10 @@ Route::prefix('user')->middleware(['auth_user'])->group(function(){
    Route::get('/wallet/Recharge/',[WalletController::class, 'walletCreate'])->name('wallet.create');
    Route::post('/recharge/store',[WalletController::class, 'walletStore'])->name('wallet.store');
 
+   // l
+   Route::get('/ledger',[LedgerController::class, 'ledger'])->name('ledger');
+
+   Route::get('/ledger/download-pdf',[LedgerController::class, 'downloadPDF'])->name('ledger.download');
 
 //    //wallets
 // Route::middleware(['auth'])->prefix('wallet')->group(function (){

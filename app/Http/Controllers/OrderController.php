@@ -61,7 +61,7 @@ class OrderController extends Controller
         $orders = DB::table('invoices')
                 ->join('invoice_items','invoice_id', '=', 'invoice_items.invoice_id')
                 ->where('invoices.customer_id', $user->id)
-                ->selectRaw('DATE(invoices.created_at) as order_date, count(invoice_items.quantity) as total_quantity, SUM(invoices.total_amount) as total_amount')
+                ->selectRaw('DATE(invoices.created_at) as order_date, SUM(invoice_items.quantity) as total_quantity, SUM(invoices.total_amount) as total_amount')
                 ->groupBy('order_date')
                 ->orderBy('order_date','desc')
                 ->get();
