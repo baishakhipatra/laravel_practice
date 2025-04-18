@@ -189,7 +189,7 @@ class LedgerController extends Controller
 
         $ledgers = $ledgers->latest('id')->paginate(25);
     
-        $pdf = Pdf::loadView('ledger.allLedgerDownload_pdf', compact('user', 'ledgers', 'balance'));
+        $pdf = Pdf::loadView('ledger.allLedgerDownload_pdf', compact('admin', 'ledgers', 'balance','totalCredit','totalDebit'));
 
         return $pdf->download('ledger_' . now()->format('Ymd') . '.pdf'); 
     }

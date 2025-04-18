@@ -15,7 +15,7 @@
                 <th>Transaction ID</th>
                 <th>Amount</th>
                 <th>Purpose</th>
-                <th>Description</th>
+                <th>Description</th> 
                 <th>Credit</th>
                 <th>Debit</th>
             </tr>
